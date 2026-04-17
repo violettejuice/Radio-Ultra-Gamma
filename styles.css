@@ -6,47 +6,46 @@
 /* --------------- FONTS --------------- */
 @font-face {
   font-family: "TWK Continental";
-  src: url("typefaces/TWK Continental-Heavy.woff2") format("woff2");
+  src: url(":typefaces/TWK\ Continental-Heavy.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "TWK Continental";
-  src: url("typefaces/TWK Continental-Book.woff2") format("woff2");
+  src: url(":typefaces/TWK\ Continental-Book.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "TWK Continental";
-  src: url("typefaces/TWK Continental-Book Italic.woff2") format("woff2");
+  src: url(":typefaces/TWK\ Continental-Book\ Italic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "TWK Continental Mono";
-  src: url("typefaces/TWKContinentalMono-Medium.otf") format("opentype");
+  src: url(":typefaces/TWKContinentalMono-Medium.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "GT Ultra Fine Trial";
-  src: url("typefaces/GT-Ultra-Fine-Light-Italic-Trial.woff2") format("woff2");
+  src: url(":typefaces/GT-Ultra-Fine-Light-Italic-Trial.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "GT Ultra Trial";
-  src: url("typefaces/GT-Ultra-Standard-Regular-Trial.woff2") format("woff2");
+  src: url(":typefaces/GT-Ultra-Standard-Regular-Trial.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
 /* --------------- VARIABLES --------------- */
 :root {
   --bg: #ffffff;
