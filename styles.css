@@ -1,0 +1,527 @@
+
+/* =====================================================
+   RADIO ULTRA GAMMA — Interactive Electromagnetic Spectrum
+   ===================================================== */
+
+/* --------------- FONTS --------------- */
+@font-face {
+  font-family: "TWK Continental";
+  src: url("typefaces/TWK Continental-Heavy.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TWK Continental";
+  src: url("typefaces/TWK Continental-Book.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TWK Continental";
+  src: url("typefaces/TWK Continental-Book Italic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TWK Continental Mono";
+  src: url("typefaces/TWKContinentalMono-Medium.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "GT Ultra Fine Trial";
+  src: url("typefaces/GT-Ultra-Fine-Light-Italic-Trial.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "GT Ultra Trial";
+  src: url("typefaces/GT-Ultra-Standard-Regular-Trial.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --------------- VARIABLES --------------- */
+:root {
+  --bg: #ffffff;
+  --black: #000000;
+  --gray-dark: #5d5d5d;
+  --gray-mid: #919191;
+  --gray-light: #c0c0c0;
+  --white: #ffffff;
+
+  --canvas-w: 5512px;
+  --canvas-h: 900px;
+
+  --margin-l: 50px;
+  --margin-r: 0px;
+  --margin-t: 90px;
+  --margin-b: 30px;
+
+  --grid-size: 210px;
+}
+
+/* --------------- RESET --------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--black);
+  font-family: "TWK Continental", system-ui, sans-serif;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 100vh;
+  position: relative;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; background: none; border: none; padding: 0; cursor: pointer; color: inherit; }
+
+/* --------------- BACKGROUND GRID --------------- */
+/* Fixed to viewport — does not move when we scroll, so it feels like
+   the background stays still while foreground drifts. */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-color: var(--bg);
+  /* Grid: 210x210 tiles with thin gray lines + tiny 7x7 crosses at each
+     intersection. The SVG tile contains the four 3.5px fragments of
+     the cross at the tile corners; tiled, adjacent fragments combine
+     into a full cross at every grid intersection. */
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='210' height='210' viewBox='0 0 210 210'><g stroke='%23919191' stroke-width='0.6' fill='none'><line x1='0' y1='0' x2='3.5' y2='0'/><line x1='0' y1='0' x2='0' y2='3.5'/><line x1='206.5' y1='0' x2='210' y2='0'/><line x1='210' y1='0' x2='210' y2='3.5'/><line x1='0' y1='210' x2='3.5' y2='210'/><line x1='0' y1='206.5' x2='0' y2='210'/><line x1='206.5' y1='210' x2='210' y2='210'/><line x1='210' y1='206.5' x2='210' y2='210'/></g></svg>"),
+    linear-gradient(to right, rgba(192,192,192,1) 0.3px, transparent 0.3px),
+    linear-gradient(to bottom, rgba(192,192,192,1) 0.3px, transparent 0.3px);
+  background-size:
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size);
+  background-position: 0 0, 0 0, 0 0;
+}
+
+/* --------------- AXIS LEGENDS (sticky to left margin) --------------- */
+.axis-legends {
+  position: fixed;
+  left: 800px;
+  bottom: 0px;
+  height: 155px;
+  z-index: 5;
+  pointer-events: none;
+  font-family: "TWK Continental Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: -0.39px;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+}
+.axis-legend { position: absolute; white-space: nowrap; }
+.axis-legend--wavelength { top: 10px; left: 0; }
+.axis-legend--frequency  { top: 52px; left: 0; }
+
+/* --------------- CANVAS --------------- */
+.canvas {
+  position: relative;
+  width: var(--canvas-w);
+  height: var(--canvas-h);
+  min-height: 100vh;
+  z-index: 1;
+}
+
+/* --------------- TITLE --------------- */
+.title-block {
+  position: absolute;
+  top: var(--margin-t);
+  left: var(--margin-l);
+  width: 964px;
+  z-index: 3;
+  user-select: none;
+}
+.title {
+  margin: 0;
+  color: var(--gray-dark);
+  font-family: "TWK Continental", sans-serif;
+  font-size: 242px;
+  font-weight: 900;
+  line-height: 172px;
+  letter-spacing: -7.26px;
+  text-transform: uppercase;
+}
+.subtitle {
+  margin: 14px 0 0 0;
+  color: var(--gray-dark);
+  font-family: "TWK Continental Mono", monospace;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.66px;
+  text-transform: uppercase;
+}
+
+/* --------------- WAVE --------------- */
+.wave-wrap {
+  position: absolute;
+  top: calc(50% - 81.5px);
+  left: 0;
+  width: 5512px;
+  height: 163px;
+  z-index: 2;
+  pointer-events: none;
+}
+.wave-img {
+  display: block;
+  width: 5512px;
+  height: 163px;
+}
+
+/* --------------- SCALES --------------- */
+.scales {
+  position: absolute;
+  bottom: var(--margin-b);
+  left: 0;
+  width: 100%;
+  height: 130px;
+  z-index: 2;
+  font-family: "TWK Continental", sans-serif;
+}
+.scale {
+  position: absolute;
+  left: 980px;
+  height: 30px;
+}
+.scale__line {
+  position: absolute;
+  left: 0;
+  top: 9px;
+  height: 0.7px;
+  background: var(--gray-mid);
+}
+.scale__ticks { position: relative; height: 20px; }
+.scale__ticks .tick {
+  position: absolute;
+  top: 0;
+  width: 0.7px;
+  height: 9px;
+  background: var(--gray-mid);
+}
+.scale__labels {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  height: 16px;
+}
+.scale__labels .label {
+  position: absolute;
+  transform: translateX(-50%);
+  color: var(--gray-mid);
+  font-family: "TWK Continental", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: -0.39px;
+  text-align: center;
+  white-space: nowrap;
+}
+.scale--wavelength { top: 10px; width: 4493px; }
+.scale--wavelength .scale__line { width: 4493px; }
+.scale--frequency  { top: 52px; width: 4348px; }
+.scale--frequency .scale__line  { width: 4348px; }
+
+/* Wave-type labels beneath the frequency scale */
+.type-labels {
+  position: absolute;
+  left: -30px;
+  top: 88px;
+  width: 100%;
+  height: 42px;
+  font-family: "TWK Continental Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: -0.39px;
+  color: var(--black);
+  text-transform: uppercase;
+}
+.type-labels .type-tick {
+  position: absolute;
+  top: 0;
+  width: 0.7px;
+  height: 30px;
+  background: var(--black);
+}
+.type-labels .type-label {
+  position: absolute;
+  top: 4px;
+  white-space: nowrap;
+}
+
+/* --------------- INFORMATION BLOCKS --------------- */
+.info-block {
+  position: fixed;
+  z-index: 4;
+  width: max-content;
+}
+
+/* The visible outline IS the border on the body */
+.block-body {
+  position: relative;
+  padding: 13px;
+  border: 0.7px solid var(--black);
+  background: white;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+/* Anchor square — sits at bottom-left of the outline, centered on the wave */
+.block-anchor {
+  position: absolute;
+  left: -7.5px;
+  bottom: -7.5px;
+  width: 15px;
+  height: 15px;
+  z-index: 2;
+}
+.block-anchor__outer {
+  position: absolute;
+  inset: 0;
+  border: 0.7px solid var(--black);
+  background: var(--white);
+}
+.block-anchor__inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 5px;
+  background: var(--black);
+}
+
+/* Closed + open content areas arrange horizontally */
+.block-closed, .block-open {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+.block-open { display: none; }
+.info-block.is-open .block-open { display: flex; }
+
+/* Columns within closed content */
+.block-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+/* The first column (text/source/button) has the button anchored to the bottom */
+.block-closed .block-column:first-child {
+  min-height: 100%;
+}
+
+.block-subtitle {
+  margin: 0;
+  color: var(--black);
+  font-family: "TWK Continental Mono", monospace;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 34px;
+  letter-spacing: -0.66px;
+  text-transform: uppercase;
+}
+.block-text {
+  margin: 0;
+  color: var(--black);
+  font-family: "TWK Continental", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: -0.54px;
+}
+.block-text u {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+/* Source pills */
+.source {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 10px;
+  height: 21px;
+  border-radius: 10.5px;
+  border: 0.7px solid var(--gray-mid);
+  color: var(--gray-mid);
+  text-align: center;
+  font-family: "TWK Continental", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: -0.39px;
+  transition: background 200ms, color 200ms;
+  white-space: nowrap;
+}
+.source:hover { background: var(--gray-mid); color: var(--white); }
+
+.source--small {
+  height: 16px;
+  padding: 1px 8px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 10px;
+  letter-spacing: -0.3px;
+}
+
+/* Toggle (+/-) button */
+.toggle-btn {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border: 0.7px solid var(--gray-mid);
+  background: var(--white);
+  cursor: pointer;
+  transition: background 200ms, border-color 200ms;
+  margin-top: 4px;
+}
+.toggle-btn:hover { background: #f6f6f6; }
+.toggle-btn .plus {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+.toggle-btn .plus::before,
+.toggle-btn .plus::after {
+  content: "";
+  position: absolute;
+  background: var(--gray-mid);
+}
+.toggle-btn .plus::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 12px;
+  transform: translateX(-50%);
+  transition: transform 300ms cubic-bezier(.2,.7,.2,1), opacity 200ms;
+}
+.toggle-btn .plus::after {
+  top: 50%;
+  left: 0;
+  width: 12px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+.info-block.is-open .toggle-btn .plus::before {
+  transform: translateX(-50%) rotate(90deg);
+  opacity: 0;
+}
+
+/* Figures */
+.block-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+.block-figure img {
+  display: block;
+  object-fit: cover;
+  max-width: none;
+}
+
+/* --------------- OPEN STATE --------------- */
+.open-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 260px;
+}
+.open-subtitle {
+  margin: 0;
+  color: var(--black);
+  font-family: "GT Ultra Fine Trial", serif;
+  font-size: 28px;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 30px;
+  letter-spacing: -0.84px;
+  text-transform: uppercase;
+}
+.open-text {
+  margin: 0;
+  color: var(--black);
+  font-family: "GT Ultra Trial", serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.54px;
+}
+
+/* Visible light special layout */
+.info-block--visible .block-closed { gap: 18px; }
+.block-figure--no-source { gap: 0; }
+.info-block--visible .block-figure img { object-fit: fill; }
+/* When opened, the small visible bar is replaced by the text/source column */
+.info-block--visible.is-open .visible-bar-small { display: none; }
+
+.block-open--visible {
+  flex-wrap: wrap;
+  max-width: 400px;
+}
+.open-col--visible-text  { width: 175px; }
+.open-col--visible-prism { width: 163px; }
+.open-col--visible-bar   {
+  width: 387px;
+  margin-top: 12px;
+  flex-basis: 100%;
+}
+.open-col--visible-bar .block-figure img {
+  width: 387px !important;
+  height: 45px !important;
+  object-fit: fill;
+}
+.visible-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 387px;
+  margin-top: 6px;
+  font-family: "TWK Continental Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.39px;
+  color: var(--black);
+  text-transform: uppercase;
+}
+
+/* --------------- SCROLLBAR (subtle) --------------- */
+::-webkit-scrollbar { height: 10px; }
+::-webkit-scrollbar-track { background: #fafafa; }
+::-webkit-scrollbar-thumb { background: #dcdcdc; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #bcbcbc; }
+
+/* --------------- HELPERS --------------- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}

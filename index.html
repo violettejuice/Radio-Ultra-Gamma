@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radio Ultra Gamma — Interactive Electromagnetic Spectrum</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Fixed background grid (stays with viewport) -->
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <!-- Fixed-left axis legends (stick to left margin while scrolling) -->
+  <div class="axis-legends" aria-hidden="true">
+    <div class="axis-legend axis-legend--wavelength">WAVELENGTH</div>
+    <div class="axis-legend axis-legend--frequency">FREQUENCY (HZ)</div>
+  </div>
+
+  <!-- The main horizontally-scrolling canvas -->
+  <main class="canvas" id="canvas">
+
+    <!-- Wave -->
+      <div class="wave-wrap" id="waveWrap">
+        <img src=":images/Wave.png" alt="" class="wave-img">
+      </div>
+
+      <!-- Title -->
+      <header class="title-block">
+        <h1 class="title">RADIO<br/>ULTRA<br/>GAMMA</h1>
+        <p class="subtitle">INTERACTIVE ELECTROMAGNETIC SPECTRUM</p>
+      </header>
+
+      <!-- Scales (wavelength + frequency) -->
+      <div class="scales" aria-hidden="true">
+        <!-- Wavelength scale -->
+        <div class="scale scale--wavelength" id="scaleWavelength">
+          <div class="scale__line"></div>
+          <div class="scale__ticks" id="wlTicks"></div>
+          <div class="scale__labels" id="wlLabels"></div>
+        </div>
+        <!-- Frequency scale -->
+        <div class="scale scale--frequency" id="scaleFrequency">
+          <div class="scale__line"></div>
+          <div class="scale__ticks" id="frTicks"></div>
+          <div class="scale__labels" id="frLabels"></div>
+        </div>
+        <!-- Wave-type labels under the frequency scale -->
+        <div class="type-labels" id="typeLabels"></div>
+      </div>
+
+      <!-- ========== INFORMATION BLOCKS ========== -->
+
+      <!-- GAMMA RAYS -->
+      <article class="info-block" data-block="gamma" style="left: 4720px;">
+        <div class="block-body">
+          <div class="block-closed">
+            <div class="block-column">
+              <h2 class="block-subtitle">GAMMA RAYS</h2>
+              <p class="block-text" style="width:189px;height:169px;">Gamma rays are the most energetic, <u>shortest-wavelength</u> form of electromagnetic radiation. Produced by <u>radioactive decay</u>, <u>nuclear explosions</u>, and <u>extreme cosmic events</u>.</p>
+              <a class="source" href="https://science.nasa.gov/ems/" target="_blank" rel="noreferrer" style="width:89px;">Science Nasa</a>
+              <button class="toggle-btn" aria-label="More info" data-target="gamma">
+                <span class="plus"></span>
+              </button>
+            </div>
+            <div class="block-column">
+              <figure class="block-figure">
+                <img src=":images/07-GAMMA.jpg" alt="Gamma rays in the Milky Way" style="width:284px;height:160px;">
+                <a class="source source--small" href="https://svs.gsfc.nasa.gov/11545/" target="_blank" rel="noreferrer" style="width:238px;">Gamma rays in the Milky Way, ©Fermi spacecraft NASA</a>
+              </figure>
+            </div>
+          </div>
+
+          <div class="block-open">
+            <div class="block-column open-col">
+              <h3 class="open-subtitle">FUN FACT</h3>
+              <p class="open-text" style="width:237px;height:123px;">Supernovas and gamma-ray bursts can release more energy in seconds than the Sun will emit over its entire lifetime.</p>
+              <figure class="block-figure">
+                <img src=":images/07-GAMMA-fun_fact.avif" alt="Gamma-ray burst" style="width:237px;height:158px;">
+                <a class="source source--small" href="https://science.nasa.gov/asset/hubble/grb-190114c/" target="_blank" rel="noreferrer" style="width:132px;">©NASA, ESA,  M. Kornmesser</a>
+              </figure>
+            </div>
+          </div>
+          <div class="block-anchor" aria-hidden="true">
+            <span class="block-anchor__outer"></span>
+            <span class="block-anchor__inner"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- X-RAYS -->
+      <article class="info-block" data-block="xray" style="left: 4170px;">
+        <div class="block-body">
+          <div class="block-closed">
+            <div class="block-column">
+              <h2 class="block-subtitle">X-RAYS</h2>
+              <p class="block-text" style="width:189px;height:169px;">X-rays are high-energy waves that can <u>pass through</u> soft tissues, allowing imaging of <u>bones</u> and <u>internal structures</u>.</p>
+              <a class="source" href="https://science.nasa.gov/ems/" target="_blank" rel="noreferrer" style="width:89px;">Science Nasa</a>
+              <button class="toggle-btn" aria-label="More info" data-target="xray">
+                <span class="plus"></span>
+              </button>
+            </div>
+            <div class="block-column">
+              <figure class="block-figure">
+                <img src=":images/06-XRAY.jpg" alt="Hand x-ray" style="width:160px;height:160px;">
+                <a class="source source--small" href="https://www.imaginghealthcare.com/diagnostic-imaging/digital-x-ray/" target="_blank" rel="noreferrer" style="width:87px;">Digital X-ray, ©IHS</a>
+              </figure>
+            </div>
+          </div>
+
+          <div class="block-open">
+            <div class="block-column open-col">
+              <h3 class="open-subtitle">TELESCOPES</h3>
+              <p class="open-text" style="width:208px;height:129px;">Earth's atmosphere blocks most X-rays from space, which is why space telescopes are needed to detect them.</p>
+              <figure class="block-figure">
+                <img src=":images/06-XRAY-telescope.jpg" alt="X-ray space telescope" style="width:143px;height:143px;">
+                <a class="source source--small" href="https://phys.org/news/2018-10-nasa-x-ray-space-telescope-online.html" target="_blank" rel="noreferrer" style="width:71px;">©Marcia Dunn</a>
+              </figure>
+            </div>
+          </div>
+          <div class="block-anchor" aria-hidden="true">
+            <span class="block-anchor__outer"></span>
+            <span class="block-anchor__inner"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ULTRAVIOLET -->
+      <article class="info-block" data-block="uv" style="left: 3680px;">
+        <div class="block-body">
+          <div class="block-closed">
+            <div class="block-column">
+              <h2 class="block-subtitle">ULTRAVIOLET</h2>
+              <p class="block-text" style="width:189px;height:141px;">Ultraviolet is invisible light from the <u>Sun</u> with higher energy than visible light, responsible for both <u>vitamin D production</u> and <u>sunburn</u>.</p>
+              <a class="source" href="https://science.nasa.gov/ems/" target="_blank" rel="noreferrer" style="width:89px;">Science Nasa</a>
+              <button class="toggle-btn" aria-label="More info" data-target="uv">
+                <span class="plus"></span>
+              </button>
+            </div>
+            <div class="block-column">
+              <figure class="block-figure">
+                <img src=":images/05-ULTRA.png" alt="Ultraviolet ozone layer" style="width:173.165px;height:160px;">
+                <a class="source source--small" href="https://www.sciencing.com/percent-uv-ozone-absorb-20509/" target="_blank" rel="noreferrer" style="width:172px;">UV on Ozone layer, ©Richard Gaughan</a>
+              </figure>
+            </div>
+          </div>
+
+          <div class="block-open">
+            <div class="block-column open-col">
+              <h3 class="open-subtitle">REMINDER</h3>
+              <p class="open-text" style="width:209px;height:107px;">15 minutes of sunlight is enough to cause skin damage.<br/>Put on your sunscreen. :)</p>
+              <a class="source source--small" href="https://hartfordhospital.org/about-hh/news-center/news-detail?articleId=14497&publicid=395" target="_blank" rel="noreferrer" style="width:106px;">©Hartford HealthCare</a>
+            </div>
+          </div>
+          <div class="block-anchor" aria-hidden="true">
+            <span class="block-anchor__outer"></span>
+            <span class="block-anchor__inner"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- VISIBLE LIGHT -->
+      <article class="info-block info-block--visible" data-block="visible" style="left: 3400px;">
+        <div class="block-body">
+          <div class="block-closed">
+            <div class="block-column">
+              <h2 class="block-subtitle">VISIBLE LIGHT</h2>
+              <figure class="block-figure block-figure--no-source">
+                <img src=":images/04-VISIBLE.png" alt="Visible spectrum bar" class="visible-bar-small" style="width:161px;height:45px;">
+              </figure>
+              <button class="toggle-btn" aria-label="More info" data-target="visible">
+                <span class="plus"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="block-open block-open--visible">
+            <div class="open-col open-col--visible-text">
+              <p class="open-text" style="width:175px;">Visible light is the small portion of the electromagnetic spectrum that <u>human eyes can detect</u>.</p>
+              <a class="source" href="https://www.britannica.com/science/light" target="_blank" rel="noreferrer">Encyclopedia Britannica</a>
+            </div>
+            <div class="open-col open-col--visible-prism">
+              <figure class="block-figure block-figure--no-source">
+                <img src=":images/04-VISIBLE-prism.webp" alt="Prism dispersing light" style="width:163px;height:118px;">
+              </figure>
+            </div>
+            <div class="open-col open-col--visible-bar">
+              <figure class="block-figure block-figure--no-source">
+                <img src=":images/04-VISIBLE.png" alt="Visible spectrum bar wide" style="width:387px;height:45px;">
+              </figure>
+              <div class="visible-bar-labels">
+                <span>&larr; INFRA-RED</span>
+                <span>ULTRAVIOLET &rarr;</span>
+              </div>
+            </div>
+          </div>
+          <div class="block-anchor" aria-hidden="true">
+            <span class="block-anchor__outer"></span>
+            <span class="block-anchor__inner"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- INFRA-RED -->
+      <article class="info-block" data-block="infra" style="left: 2800px;">
+        <div class="block-body">
+          <div class="block-closed">
+            <div class="block-column">
+              <h2 class="block-subtitle">INFRA-RED</h2>
+              <p class="block-text" style="width:189px;height:194px;">Infra-red is invisible electromagnetic radiation with <u>longer wavelengths</u> than visible light, commonly experienced as heat emitted by <u>warm objects</u> and used for thermal imaging.</p>
+              <a class="source" href="https://www.esa.int/Science_Exploration/Space_Science/Integral/The_electromagnetic_spectrum" target="_blank" rel="noreferrer" style="width:148px;">European Space Agency</a>
+              <button class="toggle-btn" aria-label="More info" data-target="infra">
+                <span class="plus"></span>
+              </button>
+            </div>
+            <div class="block-column">
+              <figure class="block-figure">
+                <img src=":images/03-INFRA.png" alt="Thermal imaging street" style="width:210px;height:160px;">
+                <a class="source source--small" href="https://phys.org/news/2010-07-infrared-camera-view.html" target="_blank" rel="noreferrer" style="width:152px;">Infrared camera, ©Fraunhofer IMS</a>
+              </figure>
+            </div>
+          </div>
+
+          <div class="block-open">
+            <div class="block-column open-col">
+              <h3 class="open-subtitle">FUN FACT</h3>
+              <p class="open-text" style="width:230px;height:169px;">Several animals possess the ability to detect infrared light or thermal radiation, allowing them to sense heat from prey or their environment, often in total darkness.</p>
+              <figure class="block-figure">
+                <img src=":images/03-INFRA-fun_fact.webp" alt="Infrared bird" style="width:230px;height:153px;">
+                <a class="source source--small" href="https://www.sciencefocus.com/nature/can-animals-see-infrared-light" target="_blank" rel="noreferrer" style="width:70px;">©James Lloyd</a>
+              </figure>
+            </div>
+          </div>
+          <div class="block-anchor" aria-hidden="true">
+            <span class="block-anchor__outer"></span>
+            <span class="block-anchor__inner"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- MICROWAVES -->
+      <article class="info-block" data-block="micro" style="left: 2150px;">
+        <div class="block-body">
+          <div class="block-closed">
+            <div class="block-column">
+              <h2 class="block-subtitle">MICROWAVES</h2>
+              <p class="block-text" style="width:187px;height:169px;">Microwaves are higher-energy radio waves used in <u>communication</u>, <u>radar</u>, and <u>cooking technologies</u>.</p>
+              <a class="source" href="https://en.wikipedia.org/wiki/Microwave" target="_blank" rel="noreferrer" style="width:70px;">Wikipedia</a>
+              <button class="toggle-btn" aria-label="More info" data-target="micro">
+                <span class="plus"></span>
+              </button>
+            </div>
+            <div class="block-column">
+              <figure class="block-figure">
+                <img src=":images/02-MICRO.jpg" alt="AT&T microwave tower" style="width:265px;height:177px;">
+                <a class="source source--small" href="https://99percentinvisible.org/article/vintage-skynet-atts-abandoned-long-lines-microwave-tower-network/" target="_blank" rel="noreferrer" style="width:147px;">AT &amp; T's (USA), ©Spencer Harding</a>
+              </figure>
+            </div>
+          </div>
+
+          <div class="block-open">
+            <div class="block-column open-col">
+              <h3 class="open-subtitle">FUN FACT</h3>
+              <p class="open-text" style="width:229px;height:112px;">The Cosmic Microwave Background is leftover radiation from the Big Bang, filling the entire universe.</p>
+              <figure class="block-figure">
+                <img src=":images/02-MICRO-fun_fact.jpeg" alt="Cosmic Microwave Background" style="width:229px;height:115px;">
+                <a class="source source--small" href="https://en.wikipedia.org/wiki/Cosmic_microwave_background" target="_blank" rel="noreferrer" style="width:61px;">Wikipedia</a>
+              </figure>
+            </div>
+          </div>
+          <div class="block-anchor" aria-hidden="true">
+            <span class="block-anchor__outer"></span>
+            <span class="block-anchor__inner"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- RADIO WAVES -->
+      <article class="info-block" data-block="radio" style="left: 1370px;">
+        <div class="block-body">
+          <div class="block-closed">
+            <div class="block-column">
+              <h2 class="block-subtitle">RADIO WAVES</h2>
+              <p class="block-text" style="width:180px;height:169px;">Radio waves are the <u>longest-wavelength</u>, <u>lowest-energy</u> part of the electromagnetic spectrum, commonly used to transmit <u>information wirelessly</u>.</p>
+              <a class="source" href="https://www.britannica.com/science/light" target="_blank" rel="noreferrer" style="width:144px;">Encyclopedia Britannica</a>
+              <button class="toggle-btn" aria-label="More info" data-target="radio">
+                <span class="plus"></span>
+              </button>
+            </div>
+            <div class="block-column">
+              <figure class="block-figure">
+                <img src=":images/01-RADIO.jpg" alt="Very Large Array radio dishes" style="width:299px;height:160px;">
+                <a class="source source--small" href="https://www.primalucelab.com/blog/largest-radio-telescopes-in-the-world/" target="_blank" rel="noreferrer" style="width:112px;">VLA (USA), ©Alex Savello</a>
+              </figure>
+            </div>
+          </div>
+
+          <!-- OPEN EXTRA CONTENT -->
+          <div class="block-open">
+            <div class="block-column open-col">
+              <h3 class="open-subtitle">FUN FACT</h3>
+              <p class="open-text" style="width:187px;height:96px;">You can hide secret images in spectrograms to troll netizens.</p>
+              <figure class="block-figure">
+                <img src=":images/01-RADIO-fun_fact.png" alt="Spectrogram cat" style="width:106px;height:163px;">
+                <a class="source source--small" href="https://mixmag.net/feature/spectrogram-art-music-aphex-twin" target="_blank" rel="noreferrer" style="width:61px;">©Anita Lillie</a>
+              </figure>
+            </div>
+            <div class="block-column open-col">
+              <h3 class="open-subtitle">RADIO ASTRONOMY</h3>
+              <p class="open-text" style="width:252px;height:114px;">Radio astronomy helped discover pulsars stars that emit regular radio signals like cosmic lighthouses.</p>
+              <figure class="block-figure">
+                <img src=":images/01-RADIO-astronomy.jpg" alt="Radio astronomy pulsar" style="width:252px;height:126px;">
+                <a class="source source--small" href="https://www.brandeis.edu/physics/index.html" target="_blank" rel="noreferrer" style="width:155px;">©Martin A. Fisher School of Physics</a>
+              </figure>
+            </div>
+          </div>
+          <div class="block-anchor" aria-hidden="true">
+            <span class="block-anchor__outer"></span>
+            <span class="block-anchor__inner"></span>
+          </div>
+        </div>
+      </article>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
